@@ -7,28 +7,35 @@
 
 #Pré Projeto Crud em Python
 import os, sqlite3,pwinput
+from datetime import datetime
+estrato=[]
 os.system('cls')
 # Conexão com o banco de dados SQLite
 conn = sqlite3.connect('banco.db')
 cursor = conn.cursor()
 
 # Criando a tabela de usuários se não existir
+
 cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
                     username TEXT PRIMARY KEY,
                     password TEXT,
                     saldo INTEGER
                 )''')
-conn.commit()
 
+conn.commit()
 def Cadastro_usuario(username, password):
     cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
     user = cursor.fetchone()
     if user:
         return "Nome de usuário já existe. Por favor, escolha outro."
-    else:
+    elif username==password:
+        print("Usuario e senhas iguais, tente novamente")
+    elif username!='' and password!="":
         cursor.execute("INSERT INTO usuarios (username, password, saldo) VALUES (?, ?, ?)", (username, password, 0))
         conn.commit()
         return "Cadastro realizado com sucesso!"
+    else:
+        print("usuario ou senha vazio")
 
 def Login_usuario(username, password):
     cursor.execute("SELECT * FROM usuarios WHERE username = ? AND password = ?", (username, password))
@@ -52,20 +59,28 @@ DIGITE A OPERAÇÃO DESEJADA
         if opc1 == "1":
             print( "Seu saldo é de R$ {}".format(saldo))
         elif opc1 == "2":
-            saque = int(input("Qual valor você deseja sacar? "))       
+            saque = float(input("Qual valor você deseja sacar? "))       
             if saldo < saque:
                 print("\nValor insuficiente")
             else:
                 saldo -= saque
                 cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
                 conn.commit()
-                print("Valor do saque de R$ {} realizado com sucesso".format(saque))
+                relato_saque=f"Saque de R$ {saque:.2f} realizado com sucesso."
+                print(relato_saque)
+                hora=datetime.now()
+                hora=hora.strftime("%d/%m/%Y %H:%M")
+                estrato.append([username,relato_saque,hora])
         elif opc1 == "3":
-            deposito=int(input("Qual valor que deseja depositar? "))
+            deposito=float(input("Qual valor que deseja depositar? "))
             saldo += deposito
             cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
             conn.commit()
-            print(f"Depósito de R$ {deposito} realizado \nSaldo atual R$ {saldo}")
+            hora=datetime.now()
+            hora=hora.strftime("%d/%m/%Y %H:%M")
+            relato_deposito=f"Depósito de R$ {deposito} realizado."
+            print(relato_deposito)
+            estrato.append([username,relato_deposito,hora])
         elif opc1 == "4":
             deletar_conta=input("Deseja deletar sua conta? (S/N)")
             if deletar_conta.lower() == "s":
@@ -95,7 +110,6 @@ while True:
     elif opc == "2":
         username = input("Digite seu nome de usuário: ")
         password = pwinput.pwinput("Digite sua senha: ", mask="*")
-
         user = Login_usuario(username, password)
         if user:
             print("Login bem-sucedido!")
@@ -107,5 +121,8 @@ while True:
         break   
     else:
         print("Opção inválida. Por favor, escolha novamente.")
-
+with open("CRUD\estrato.txt","w") as arquivo_estrato:
+    arquivo_estrato.write(f"{"EXTRATO":^50}\n")
+    for i,(usuario,hora,relatorio) in enumerate(estrato):
+        arquivo_estrato.write(f"{relatorio} {hora} \n")
 conn.close()
