@@ -121,8 +121,9 @@ while True:
         break   
     else:
         print("Opção inválida. Por favor, escolha novamente.")
-with open("CRUD\estrato.txt","w") as arquivo_estrato:
-    arquivo_estrato.write(f"{"EXTRATO DE ":^50}\n")
-    for i,(usuario,hora,relatorio) in enumerate(estrato):
-        arquivo_estrato.write(f"{relatorio} {hora} \n")
+arquivo_estrato=open("CRUD\estrato.txt","w")
+arquivo_estrato.write(f"{"EXTRATO":^50}\n")
+arquivo_estrato.write(f"{username:^50}\n")
+for i,(usuario,hora,relatorio) in enumerate(estrato):
+    arquivo_estrato.write(f"{relatorio} {hora} \n")
 conn.close()

@@ -1,2 +1,4 @@
-EXTRATO DE {username:^50}
-18/04/2024 16:03 Saque de R$ 1.00 realizado com sucesso. 
+                     EXTRATO                      
+                        e                         
+22/04/2024 19:26 Depósito de R$ 1.0 realizado. 
+22/04/2024 19:26 Depósito de R$ 1.0 realizado. 

@@ -246,11 +246,10 @@ import math
 # n2=1
 # for n1 in range(1,21):
 #     print(n1)
-#     n1+=1
 # for n2 in range(1,21):
 #     print(n2,end=" ")
-#     n2+=1
-#     
+
+    
 # print(random.randint(1,51))
 
 # n=int(input("digite n "))
