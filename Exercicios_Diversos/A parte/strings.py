@@ -1,4 +1,4 @@
-import datetime, locale
+import datetime, locale,random
 #1)
 # string1=input("digite ")
 # string2=input("digite ")
@@ -77,3 +77,63 @@ import datetime, locale
 #         print("coloque os pontos")
 
 #10)
+
+#11)
+# forca=open(r"Exercicios_Diversos\A parte\forca.txt","r")
+# palavras=[]
+# palavra2=[]
+# palavra3=[]
+# palavra=()
+# cont=5
+# for i in forca:
+#         palavras.append(i.split())
+# forca.close()
+
+# indice=random.randint(0,len(palavras)-1)
+# palavra=list(palavras[indice][0])
+# qtd=len(palavra)
+# palavra3=palavra[:]
+# while palavra3 and cont>0:
+#     tentativa=input(f"advinhe uma letra{"_ "*qtd} ")
+    
+#     if tentativa in palavra:
+#         index=palavra.index(tentativa)
+#         palavra2.insert(index,tentativa)
+#         palavra3.remove(tentativa)
+#         print(palavra2)
+#         print(palavra)
+#     else:
+#         cont-=1
+#         print(f"vc tem {cont} tentativas restantes")
+# print("vc ganhou!!")
+    
+# #ajuda do gpt
+
+
+# with open(r"Exercicios_Diversos\A parte\forca.txt", "r") as forca:
+#     palavras = [linha.strip() for linha in forca]
+
+# palavra = random.choice(palavras)
+# qtd = len(palavra)
+# palavra3 = palavra[:]
+# palavra2 = ['_'] * len(palavra)
+
+# cont = 5
+# while palavra3 and cont > 0:
+#     tentativa = input(f"adivinhe uma letra {' '.join(palavra2)}: ")
+    
+#     if tentativa in palavra:
+#         indices = [i for i, letra in enumerate(palavra) if letra == tentativa]
+#         for index in indices:
+#             palavra2[index] = tentativa
+#         palavra3 = palavra3.replace(tentativa, '_')
+#         print(''.join(palavra2))
+#     else:
+#         cont -= 1
+#         print(f"Você tem {cont} tentativas restantes.")
+
+# if cont > 0:
+#     print("Você ganhou!!")
+# else:
+#     print(f"Game over! A palavra era: {palavra}")
+
