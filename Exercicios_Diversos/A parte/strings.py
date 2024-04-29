@@ -137,3 +137,68 @@ import datetime, locale,random
 # else:
 #     print(f"Game over! A palavra era: {palavra}")
 
+#12)
+
+# telefone=input("digite numero de telefone ")
+# if len(telefone)==7:
+#     print("tem 7 digitos, adcionando o 3 ")
+#     telefone="3"+telefone[:3]+"-"+telefone[3:]
+#     print(telefone)
+
+#13)
+# cont=6
+# def embaralhar(palavra):
+#     embaralhado=""
+#     palavra=list(palavra)
+#     while palavra:
+#         embaralhado+=palavra.pop(random.randint(0,len(palavra)-1))
+#     return embaralhado
+# with open(r"Exercicios_Diversos\A parte\anagramas.txt","r") as palavras:
+#     palavras=[linha.strip() for linha in palavras]
+# palavra=random.choice(palavras)
+# embaralhado=embaralhar(palavra)
+# while cont>0:
+#     advinha=input(f"A palavra embaralhada é {embaralhado}, vc tem {cont} chanced de advinhar, qual é a palavra?")
+#     if advinha == palavra:
+#         print("Acertouuu")
+#         break
+#     else:
+#         cont-=1
+#         print(f"Errouuu, {cont} tentativas ")
+
+#14)
+
+# leet={
+#     "a":'4',
+#     "b":'13',
+#     "c":'(',
+#     "d":'[)',
+#     "e":'3',
+#     "f":'|',
+#     "g":'6',
+#     "h":'|-|',
+#     "i":'|',
+#     "j":']',
+#     "k":'|<',
+#     "l":'1',
+#     "m":'|Y|',
+#     "n":'/\/',
+#     "o":'0',
+#     "p":'|>',
+#     "q":'0,',
+#     "r":'|2',
+#     "s":'5',
+#     "t":'7',
+#     "u":'[_]',
+#     "v":'\/',
+#     "w":'\v/',
+#     "x":'}{',
+#     "y":"'/",
+#     "z":'2'
+# }
+# formatado=""
+# palavra=input("digite a palavra")
+# palavra=list(palavra)
+# for i in range(0,len(palavra)):
+#     formatado+=leet[palavra[i]]+" "
+# print(formatado)
