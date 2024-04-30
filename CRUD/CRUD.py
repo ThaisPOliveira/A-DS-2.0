@@ -23,6 +23,13 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
                 )''')
 
 conn.commit()
+def extrato():
+    arquivo_estrato=open("CRUD\estrato.txt","w")
+    arquivo_estrato.write(f"{"EXTRATO":^50}\n")
+    arquivo_estrato.write(f"{username:^50}\n")
+    for i,(usuario,hora,relatorio) in enumerate(estrato):
+        arquivo_estrato.write(f"{relatorio} {hora} \n")
+    conn.close()
 def Cadastro_usuario(username, password):
     cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
     user = cursor.fetchone()
@@ -129,9 +136,4 @@ while True:
         break   
     else:
         print("Opção inválida. Por favor, escolha novamente.")
-arquivo_estrato=open("CRUD\estrato.txt","w")
-arquivo_estrato.write(f"{"EXTRATO":^50}\n")
-arquivo_estrato.write(f"{username:^50}\n")
-for i,(usuario,hora,relatorio) in enumerate(estrato):
-    arquivo_estrato.write(f"{relatorio} {hora} \n")
-conn.close()
+extrato()
