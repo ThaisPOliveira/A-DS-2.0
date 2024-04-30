@@ -44,7 +44,10 @@ def Login_usuario(username, password):
         return user
     else:
         return None
-
+def horario():
+    hora=datetime.now()
+    hora=hora.strftime("%d/%m/%Y %H:%M")
+    return hora
 def opcoes_banco(username, saldo):
     while True:
         opc1 = input(f'''
@@ -54,6 +57,7 @@ DIGITE A OPERAÇÃO DESEJADA
 2) Saque 
 3) Depositar
 4) Deletar conta
+5) Pesquisar conta
 0) Encerrar sessão: 
 {"="*30}\n''')
         if opc1 == "1":
@@ -68,19 +72,15 @@ DIGITE A OPERAÇÃO DESEJADA
                 conn.commit()
                 relato_saque=f"Saque de R$ {saque:.2f} realizado com sucesso."
                 print(relato_saque)
-                hora=datetime.now()
-                hora=hora.strftime("%d/%m/%Y %H:%M")
-                estrato.append([username,relato_saque,hora])
+                estrato.append([username,relato_saque,horario()])
         elif opc1 == "3":
             deposito=float(input("Qual valor que deseja depositar? "))
             saldo += deposito
             cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
             conn.commit()
-            hora=datetime.now()
-            hora=hora.strftime("%d/%m/%Y %H:%M")
             relato_deposito=f"Depósito de R$ {deposito} realizado."
             print(relato_deposito)
-            estrato.append([username,relato_deposito,hora])
+            estrato.append([username,relato_deposito,horario()])
         elif opc1 == "4":
             deletar_conta=input("Deseja deletar sua conta? (S/N)")
             if deletar_conta.lower() == "s":
@@ -88,6 +88,14 @@ DIGITE A OPERAÇÃO DESEJADA
                 conn.commit()
                 print("Conta deletada.")
                 return
+        elif opc1=='5':
+            pesquisa=input("digite nome do usuario ")
+            cursor.execute("SELECT username FROM usuarios WHERE username= ?",(pesquisa,))
+            pesquisa = cursor.fetchone()
+            if pesquisa:
+                print(f"usuario {pesquisa[0]} encontrado")
+            else:
+                print("nao encontrado")
         elif opc1 == "0":
             print("Encerrando sessão...")
             return
