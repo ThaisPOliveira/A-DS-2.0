@@ -66,7 +66,6 @@ def horario():
     hora = hora.strftime("%d/%m/%Y %H:%M")
     return hora
 
-
 def opcoes_banco(username, saldo):
     while True:
         print("=" * 33)
@@ -82,24 +81,34 @@ def opcoes_banco(username, saldo):
         if opc1 == "1":
             print("Seu saldo é de R$", saldo)
         elif opc1 == "2":
-            saque = float(input("Qual valor você deseja sacar? "))
-            if saldo < saque:
-                print("\033[91mValor insuficiente\033[0m")
+            try:
+                saque = float(input("Qual valor você deseja sacar? "))
+                
+            except ValueError:
+                print("\033[91mDigite um valor válido\033[0m")
             else:
-                saldo -= saque
+                if saldo < saque:
+                    print("\033[91mValor insuficiente\033[0m")
+                else:
+                    saldo -= saque
+                    cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
+                    conn.commit()
+                    relato_saque = f"Saque de R$ {saque:.2f} realizado com sucesso."
+                    print("\033[92m" + relato_saque + "\033[0m")
+                    estrato.append([username, relato_saque, horario()])
+            
+        elif opc1 == "3":
+            try:
+                deposito = float(input("Qual valor que deseja depositar? "))
+            except ValueError:
+                print("\033[91mDigite um valor válido\033[0m")
+            else:
+                saldo += deposito
                 cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
                 conn.commit()
-                relato_saque = f"Saque de R$ {saque:.2f} realizado com sucesso."
-                print("\033[92m" + relato_saque + "\033[0m")
-                estrato.append([username, relato_saque, horario()])
-        elif opc1 == "3":
-            deposito = float(input("Qual valor que deseja depositar? "))
-            saldo += deposito
-            cursor.execute("UPDATE usuarios SET saldo = ? WHERE username = ?", (saldo, username))
-            conn.commit()
-            relato_deposito = f"Depósito de R$ {deposito} realizado."
-            print("\033[92m" + relato_deposito + "\033[0m")
-            estrato.append([username, relato_deposito, horario()])
+                relato_deposito = f"Depósito de R$ {deposito} realizado."
+                print("\033[92m" + relato_deposito + "\033[0m")
+                estrato.append([username, relato_deposito, horario()])
         elif opc1 == "4":
             deletar_conta = input("Deseja deletar sua conta? (S/N)")
             if deletar_conta.lower() == "s":
