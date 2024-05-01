@@ -11,4 +11,3 @@ locale.setlocale(locale.LC_ALL, "pt_br.UTF-8")
 num=locale.currency(num, grouping=True)
 print(num)
 
-

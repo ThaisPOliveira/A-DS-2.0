@@ -127,7 +127,7 @@ import random
 #     lista4.append(lista1[i])
 #     lista4.append(lista2[i])
 #     lista4.append(lista3[i])
-     
+
 # print(lista1,lista2,lista3,lista4)
 # media=0
 # aluno=[]

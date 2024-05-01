@@ -1,9 +1,28 @@
-fibonnaci=int(input("digite o ultimo numero da sequência de fibonnaci desejada "))
+import turtle
+tartaruga=turtle.Turtle()
+circulo=turtle.Turtle()
+circulo.speed(0)
+tartaruga.speed(30)
+# tartaruga.shape("arrow")
+# tartaruga.right(45)
+# tartaruga.fd(100)
+# tartaruga.setx(100)
+# tartaruga.sety(200)
+# tartaruga.home()
+# tartaruga.circle(50)
+fibonnaci=15
 anterior, proximo=1,1
-print("1º termo = ",anterior,"\n2º termo = ",proximo)
-contador=3
-for i in range(fibonnaci-2):
-    proximo+=anterior  
-    print(f"{contador}º termo = {proximo}")
+
+for step in range(fibonnaci):
+    proximo+=anterior
+    for _ in range (5):
+        tartaruga.forward(proximo)
+        tartaruga.left(90)
+    tartaruga.forward(proximo)  
+    circulo.circle(proximo, 90)  # Desenha um quarto de círculo
+    
+
     anterior=proximo-anterior
-    contador+=1
+
+
+
