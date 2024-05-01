@@ -2,11 +2,11 @@ import random, locale,datetime
 from itertools import permutations
 
 #1)
-# def imprimi (numero):
-#     for i in range(1,numero+1):
-#         print(f"{i} "*i)
-# n=int(input("digite numero"))
-# imprimi(n)
+def imprimi (numero):
+    for i in range(1,numero+1):
+        print(f"{i} "*i)
+n=int(input("digite numero"))
+imprimi(n)
 
 #2) ajuda do gpt, minha soluçao tinha lista
 # def imprimi (numero):
@@ -142,41 +142,41 @@ soma=0
 # 3 4 5
 # 6 7 8
 
-def is_magic_square(square):
-    row_sum = square[0] + square[1] + square[2]
-    if (square[3] + square[4] + square[5] != row_sum or
-        square[6] + square[7] + square[8] != row_sum):
-        return False
+# def is_magic_square(square):
+#     row_sum = square[0] + square[1] + square[2]
+#     if (square[3] + square[4] + square[5] != row_sum or
+#         square[6] + square[7] + square[8] != row_sum):
+#         return False
     
-    col_sum = square[0] + square[3] + square[6]
-    if (square[1] + square[4] + square[7] != col_sum or
-        square[2] + square[5] + square[8] != col_sum):
-        return False
+#     col_sum = square[0] + square[3] + square[6]
+#     if (square[1] + square[4] + square[7] != col_sum or
+#         square[2] + square[5] + square[8] != col_sum):
+#         return False
     
-    if square[0] + square[4] + square[8] != row_sum or square[2] + square[4] + square[6] != row_sum:
-        return False
+#     if square[0] + square[4] + square[8] != row_sum or square[2] + square[4] + square[6] != row_sum:
+#         return False
     
-    return True
+#     return True
 
-def find_magic_squares():
-    squares = []
-    numbers = list(range(1, 10))
+# def find_magic_squares():
+#     squares = []
+#     numbers = list(range(1, 10))
     
-    for perm in permutations(numbers):
-        if is_magic_square(perm):
-            squares.append(perm)
+#     for perm in permutations(numbers):
+#         if is_magic_square(perm):
+#             squares.append(perm)
     
-    return squares
+#     return squares
 
-def print_magic_squares():
-    magic_squares = find_magic_squares()
-    for square in magic_squares:
-        print(square[0], square[1], square[2])
-        print(square[3], square[4], square[5])
-        print(square[6], square[7], square[8])
-        print()
+# def print_magic_squares():
+#     magic_squares = find_magic_squares()
+#     for square in magic_squares:
+#         print(square[0], square[1], square[2])
+#         print(square[3], square[4], square[5])
+#         print(square[6], square[7], square[8])
+#         print()
 
-print_magic_squares()
+# print_magic_squares()
 
 
 
