@@ -79,34 +79,38 @@ import datetime, locale,random
 #10)
 
 #11)
-# forca=open(r"Exercicios_Diversos\A parte\forca.txt","r")
-# palavras=[]
-# palavra2=[]
-# palavra3=[]
-# palavra=()
-# cont=5
-# for i in forca:
-#         palavras.append(i.split())
-# forca.close()
+# forca=open(r"Exercicios_Diversos\jogos\forca.txt","r")
+forca=open(r"Exercicios_Diversos\jogos\forca.txt","r")
+palavras=[]
+palavra2=[]
+palavra3=[]
+palavra=()
 
-# indice=random.randint(0,len(palavras)-1)
-# palavra=list(palavras[indice][0])
-# qtd=len(palavra)
-# palavra3=palavra[:]
-# while palavra3 and cont>0:
-#     tentativa=input(f"advinhe uma letra{"_ "*qtd} ")
+cont=5
+for i in forca:
+        palavras.append(i.split())
+forca.close()
+
+indice=random.randint(0,len(palavras)-1)
+palavra=list(palavras[indice][0])
+
+espaco=["_"]* len(palavra)
+palavra3=palavra[:]
+while palavra3 and cont>0:
+    tentativa=input(f"advinhe uma letra {espaco} ")
     
-#     if tentativa in palavra:
-#         index=palavra.index(tentativa)
-#         palavra2.insert(index,tentativa)
-#         palavra3.remove(tentativa)
-#         print(palavra2)
-#         print(palavra)
-#     else:
-#         cont-=1
-#         print(f"vc tem {cont} tentativas restantes")
-# print("vc ganhou!!")
-    
+    if tentativa in palavra:
+        index=palavra.index(tentativa)
+        espaco.remove(index)
+        espaco.insert(index,tentativa)
+        print(palavra2)
+        print(palavra)
+    else:
+        cont-=1
+        print(f"vc tem {cont} tentativas restantes")
+print("vc ganhou!!")
+
+
 # #ajuda do gpt
 
 
