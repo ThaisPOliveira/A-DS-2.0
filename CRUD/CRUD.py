@@ -27,7 +27,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
 
 conn.commit()
 
-
+#txt
 def extrato():
     arquivo_estrato = open("CRUD\estrato.txt", "w")
     arquivo_estrato.write(f"{'EXTRATO':^50}\n")
@@ -36,7 +36,7 @@ def extrato():
         arquivo_estrato.write(f"{relatorio} {hora} \n")
     conn.close()
 
-
+#SQLITE 
 def Cadastro_usuario(username, password):
     cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
     user = cursor.fetchone()
@@ -51,7 +51,7 @@ def Cadastro_usuario(username, password):
     else:
         return "\033[91mUsuário ou senha vazio\033[0m"
 
-
+#SQLITE
 def Login_usuario(username, password):
     cursor.execute("SELECT * FROM usuarios WHERE username = ? AND password = ?", (username, password))
     user = cursor.fetchone()
@@ -65,7 +65,7 @@ def horario():
     hora = datetime.now()
     hora = hora.strftime("%d/%m/%Y %H:%M")
     return hora
-
+#SQLITE
 def opcoes_banco(username, saldo):
     while True:
         print("=" * 33)
