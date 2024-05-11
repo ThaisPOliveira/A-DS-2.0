@@ -91,18 +91,43 @@ import re
 # print(n,x)
 
 #numero extenso
+# def extenso(x):
+#     s=(int(str(x)[:1])-2)
+#     numeros1=["one ","two ","three","four","five","six ","seven","eight","nine","ten ","eleven","Twelve","Thirteen","Fourteen","Fifteen","sixteen","seventeen","eighteen","nineteen"]
+#     numeros2=["twenty ","tirty ","fourty ","fifty ","sixty ","seventy ","eighty ","ninety "]
+#     if 1<=x<=100:
+#         if x<=19:
+#             palavra=numeros1[x-1]
+#         elif str(x)[1:]=='0':
+#             palavra=numeros2[s].strip()
+#         elif x==100:
+#             palavra="one hundred"
+#         else:
+#             palavra=numeros2[s]+numeros1[int(str(x)[1:])-1]
+#         return len(palavra)
+# while True:
+#     x=int(input(""))
+#     print(extenso(x))
 
-x=int(input(""))
-s=(int(str(x)[:1])-2)
-numeros1=["one ","two","three","four","five","six","seven","eight","nine","ten","eleven","Twelve","Thirteen","Fourteen","Fifteen","sixteen","seventeen","eighteen","nineteen"]
-numeros2=["twenty ","tirty ","fourty ","fifty ","sixty ","seventy ","eighty ","ninety "]
-if 1<=x<=100:
-    if x<=19:
-        palavra=numeros1[x-1]
-    elif str(x)[1:]=='0':
-        palavra=numeros2[s].strip()
-    elif x==100:
-        palavra="one hundred"
-    else:
-        palavra=numeros2[s]+numeros1[int(str(x)[1:])-1]
-print(palavra,len(palavra))
+
+# N=int(input(""))
+# anterior,proximo=1,1
+# if 0<N<46:
+#     if N==1:
+#        print(0)
+#     elif N==2:
+#         print(0,1,sep=" ",end="")
+#     elif N==3:
+#         print(0,1,1,sep=" ",end="")
+#     elif N>3:
+#         print("0 1 1 ",end="")
+#         for i in range(N-3):
+#             proximo+=anterior
+#             if i==N:
+#                 print(proximo)
+#             print(proximo,"",end="")
+#             anterior=proximo-anterior
+
+
+color=165-255
+print(color)
