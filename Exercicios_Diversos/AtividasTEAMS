@@ -29,6 +29,7 @@
 #     valores=[]
 #     while opc != 0:
 #         prestação=int(input("digite o valor da conta a ser paga ou digite 0 para encerrar o programa"))
+#         paga=(input("esssa conta já foi paga?"))
 #         if prestação==0:
 #            break        
 #         dias=int(input("digite os dias em atraso"))   
@@ -38,7 +39,10 @@
 #         print("o valor da prestação com juros e atrasos a ser paga é", total)
 #         extrato=[dias,juros,atraso,total]
 #         valores.append(extrato)
-#         print("valores calculados:", extrato)
+#         print(f"valor total{total}")
+#         print(f"valor inicial {prestação}")
+#         print(f"dias de atraso {dias}")
+#         print(f"juros pagos {juros}")
+#         print("essa conta já foi paga?", paga)
 
 # conta()
-
