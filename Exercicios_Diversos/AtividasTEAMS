@@ -21,28 +21,37 @@
 #                 hora+=12 
 #             print(f"o horario em 12, em 24 horas é {hora}:{minutos}")
 #         opc=int(input("Digite 0 para encerrar"))
-# horario()
+# horario() 
+prestacoespagas=[]
+def pagas(valores):
+    for i in range(len(valores)):
+        if valores[i][4]=="s":
+            prestacoespagas.append(valores[i])
+           
+def conta():
+    opc=1
+    valores=[]
+    while opc != 0:
+        prestação=int(input("digite o valor da conta a ser paga ou digite 0 para encerrar o programa"))
+        paga=input("esssa conta já foi paga?S/N").lower()
+        if prestação==0:
+           break        
+        dias=int(input("digite os dias em atraso"))   
+        juros=prestação*(0.001 * dias)
+        atraso=prestação*(0.03 * dias)
+        total= prestação+juros+atraso
+        print("o valor da prestação com juros e atrasos a ser paga é", total)
+        extrato=[dias,juros,atraso,total,paga,prestação]
+        valores.append(extrato)
+        print(f"valor total{total}")
+        print(f"valor inicial {prestação}")
+        print(f"dias de atraso {dias}")
+        print(f"juros pagos {juros}")
+        print("essa conta já foi paga?", paga)
+    pagas(valores)
+conta()
+print("contas pagas ")
+for i in range(len(prestacoespagas)):
+    print("conta de ",prestacoespagas[3])
 
 
-# def conta():
-#     opc=1
-#     valores=[]
-#     while opc != 0:
-#         prestação=int(input("digite o valor da conta a ser paga ou digite 0 para encerrar o programa"))
-#         paga=(input("esssa conta já foi paga?"))
-#         if prestação==0:
-#            break        
-#         dias=int(input("digite os dias em atraso"))   
-#         juros=prestação*(0.001 * dias)
-#         atraso=prestação*(0.03 * dias)
-#         total= prestação+juros+atraso
-#         print("o valor da prestação com juros e atrasos a ser paga é", total)
-#         extrato=[dias,juros,atraso,total]
-#         valores.append(extrato)
-#         print(f"valor total{total}")
-#         print(f"valor inicial {prestação}")
-#         print(f"dias de atraso {dias}")
-#         print(f"juros pagos {juros}")
-#         print("essa conta já foi paga?", paga)
-
-# conta()
