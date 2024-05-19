@@ -27,31 +27,36 @@ def pagas(valores):
     for i in range(len(valores)):
         if valores[i][4]=="s":
             prestacoespagas.append(valores[i])
-           
+    print("contas pagas ")
+    for i in range(len(prestacoespagas)):
+        print(f"R${prestacoespagas[i][5]:.2f}")
+
 def conta():
     opc=1
     valores=[]
     while opc != 0:
-        prestação=int(input("digite o valor da conta a ser paga ou digite 0 para encerrar o programa"))
-        paga=input("esssa conta já foi paga?S/N").lower()
+        prestação=int(input("digite o valor da conta a ser paga ou digite 0 para encerrar o programa "))
         if prestação==0:
-           break        
-        dias=int(input("digite os dias em atraso"))   
+           break       
+        paga=input("esssa conta já foi paga?S/N ").lower()
+        dias=int(input("digite os dias em atraso "))   
         juros=prestação*(0.001 * dias)
         atraso=prestação*(0.03 * dias)
         total= prestação+juros+atraso
-        print("o valor da prestação com juros e atrasos a ser paga é", total)
-        extrato=[dias,juros,atraso,total,paga,prestação]
+        print("o valor da prestação com juros e atrasos a ser paga é R$", total)
+        extrato=[prestação,dias,juros,atraso,paga,total]
         valores.append(extrato)
-        print(f"valor total{total}")
-        print(f"valor inicial {prestação}")
-        print(f"dias de atraso {dias}")
-        print(f"juros pagos {juros}")
-        print("essa conta já foi paga?", paga)
-    pagas(valores)
-conta()
-print("contas pagas ")
-for i in range(len(prestacoespagas)):
-    print("conta de ",prestacoespagas[3])
+        print(f"valor total R$ {total:.2f}")
+        print(f"valor inicial R${prestação:.2f}")
+        print(f"{dias} dias de atraso")
+        print(f"juros pagos R${juros:.2f}")
+        print("essa conta já foi paga? ", paga)
+
+    return pagas(valores)
+
+prestacoespagas=conta()
+
+
+
 
 
