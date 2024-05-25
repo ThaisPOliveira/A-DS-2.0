@@ -1,3 +1,4 @@
+
 #UMC ADS - 1°D
 #Nomes: 
 #       Eduardo Vicente Ferreira das Neves: 11241104345
@@ -16,52 +17,54 @@ os.system('cls')
 
 #txt
 def extrato():
-    arquivo_estrato = open("CRUD\cadastrotxt.txt", "w")
+    arquivo_estrato = open(r"CRUD\cadastrotxt", "w")
     arquivo_estrato.write(f"{'EXTRATO':^50}\n")
     arquivo_estrato.write(f"{username:^50}\n")
     for i, (usuario, hora, relatorio) in enumerate(estrato):
         arquivo_estrato.write(f"{relatorio} {hora} \n")
 
-
+registro=[]
 #txt
 def Cadastro_usuario(username, password):
     usuarios=[]
-    
-    arquivo_cadastrotxt= open ("CRUD\cadastrotxt.txt", "r")
-    for linha in arquivo_cadastrotxt:
-        usuario,senha,saldo=linha.split(",")
-        usuarios.append(usuario)
-        usuarios.append(senha)
-        usuarios.append(saldo)
+    saldo=0
+    with open (r"CRUD\cadastrotxt", "r") as arquivo_cadastrotxt: 
+        for linha in arquivo_cadastrotxt:
+            usuario,senha,saldo=linha.split(",")
+            registro.append(linha)
+            usuarios.append([usuario,senha,saldo])
+        
     arquivo_cadastrotxt.close()
-    if username in usuarios:
-        return "\033[91mNome de usuário já existe. Por favor, escolha outro.\033[0m"
-    elif username in usuarios:
-        return "\033[91mUsuario e senhas iguais, tente novamente\033[0m"
-    elif username != '' and password != "":
-        cadastrar=  open ("cadastrotxt", "a")
-        cadastrar.write(f"{username},{password},{saldo}\n")
-        cadastrar.close()
-        return "\033[92mCadastro realizado com sucesso!\033[0m"
-    else:
-        return "\033[91mUsuário ou senha vazio\033[0m"
+    for i in range(len(usuarios)):
+        if username in usuarios[i][0]:
+            return "\033[91mNome de usuário já existe. Por favor, escolha outro.\033[0m"
+        elif username == password:
+            return "\033[91mUsuario e senhas iguais, tente novamente\033[0m"
+        elif username != '' and password != "":
+            cadastrar =  open (r"CRUD\cadastrotxt", "a")
+            cadastrar.write(f"{username},{password},{saldo}\n")
+            cadastrar.close()
+            return "\033[92mCadastro realizado com sucesso!\033[0m"
+        else:
+            return "\033[91mUsuário ou senha vazio\033[0m"
     
 
 #txt
 def Login_usuario(username, password):
-    usuarios={}
-    arquivo_cadastrotxt= open ("CRUD\cadastrotxt.txt", "r")
+    
+    user=[]
+    arquivo_cadastrotxt= open (r"CRUD\cadastrotxt", "r")
     for linha in arquivo_cadastrotxt:       
-            usuario, senha = linha.split(",")
-            usuarios[usuario] = [senha,saldo]
-            print(usuarios)
-    if username in usuarios and usuarios[username] == password:
-        return "\033[91mLogin correto\033[0m"
-    elif username not in usuarios:
-        return "\033[91mUsuário não encontrado\033[0m"
-    else:
-        return "\033[91mSenha incorreta\033[0m"
-
+        usuario, senha,saldo = linha.split(",")
+    
+        if username == usuario and password == senha:
+            print("\033[91mLogin correto\033[0m")
+            user.append(username)
+            user.append(senha)
+            user.append(float(saldo))
+            return user
+        else:
+            pass
 
 def horario():
     hora = datetime.now()
@@ -82,7 +85,7 @@ def opcoes_banco(username, saldo):
         print("=" * 33)
         opc1 = input()
         if opc1 == "1":
-            print("Seu saldo é de R$", saldo)
+            print("Seu saldo é de R$", user[2])
         elif opc1 == "2":
             try:
                 saque = float(input("Qual valor você deseja sacar? "))
@@ -90,10 +93,10 @@ def opcoes_banco(username, saldo):
             except ValueError:
                 print("\033[91mDigite um valor válido\033[0m")
             else:
-                if saldo < saque:
+                if user[2] < saque:
                     print("\033[91mValor insuficiente\033[0m")
                 else:
-                    saldo -= saque
+                    user[2]-=saque
                     #SAQUE COM TXT
                     relato_saque = f"Saque de R$ {saque:.2f} realizado com sucesso."
                     print("\033[92m" + relato_saque + "\033[0m")
@@ -105,7 +108,7 @@ def opcoes_banco(username, saldo):
             except ValueError:
                 print("\033[91mDigite um valor válido\033[0m")
             else:
-                saldo += deposito
+                user[2]+=deposito
                 #DEPOSITO COM TXT
                 relato_deposito = f"Depósito de R$ {deposito} realizado."
                 print("\033[92m" + relato_deposito + "\033[0m")
@@ -143,14 +146,13 @@ while True:
     if opc == "1":
         username = input("Digite um nome de usuário: ")
         password = input("Digite uma senha: ")
-        print(Cadastro_usuario(username, password))
     elif opc == "2":
         username = input("Digite seu nome de usuário: ")
         password = input("Digite sua senha: ")
         user = Login_usuario(username, password)
         if user:
             print("\033[92mLogin bem-sucedido!\033[0m")
-            opcoes_banco(username,saldo)  # Passa o username e o saldo do usuário
+            opcoes_banco(user[0],user[2])  # Passa o username e o saldo do usuário
         else:
             print("\033[91mNome de usuário ou senha incorretos. Tente novamente.\033[0m")
     elif opc == "3":
@@ -189,5 +191,10 @@ while True:
         break
     else:
         print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
-
-extrato()
+for i in range(len(registro)):
+    if registro[i][0]== user[0]:
+        registro.remove(i)
+        registro.append(user)
+with open (r"CRUD\cadastrotxt", "w") as logtxt:
+      for linha in registro:
+        logtxt.write(registro[i])
