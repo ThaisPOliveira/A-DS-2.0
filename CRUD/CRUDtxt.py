@@ -17,7 +17,7 @@ os.system('cls')
 
 #txt
 def extrato():
-    arquivo_estrato = open(r"CRUD\cadastrotxt", "w")
+    arquivo_estrato = open(r"CRUD\extratotxt", "w")
     arquivo_estrato.write(f"{'EXTRATO':^50}\n")
     arquivo_estrato.write(f"{username:^50}\n")
     for i, (usuario, hora, relatorio) in enumerate(estrato):
@@ -207,3 +207,4 @@ for i in range(len(registro)):
 with open (r"CRUD\cadastrotxt", "w") as logtxt:
     for i in range(len(registro)):
         logtxt.write(f"{registro[i][0]},{registro[i][1]},{registro[i][2]}\n")
+extrato()
