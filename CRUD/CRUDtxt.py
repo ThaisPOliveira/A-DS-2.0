@@ -30,23 +30,28 @@ def Cadastro_usuario(username, password):
     saldo=0
     with open (r"CRUD\cadastrotxt", "r") as arquivo_cadastrotxt: 
         for linha in arquivo_cadastrotxt:
-            usuario,senha,saldo=linha.split(",")
-            registro.append(linha)
-            usuarios.append([usuario,senha,saldo])
-        
-    arquivo_cadastrotxt.close()
-    for i in range(len(usuarios)):
+            if not linha=="\n":
+                usuario,senha,saldo=linha.split(",")
+                registro.append([usuario,senha,saldo])
+                usuarios.append([usuario,senha,saldo])
+            else:
+                linha=["1","1","1"]
+    for i in range(len(usuarios)-1):
         if username in usuarios[i][0]:
-            return "\033[91mNome de usuário já existe. Por favor, escolha outro.\033[0m"
+            return( "\033[91mNome de usuário já existe. Por favor, escolha outro.\033[0m")
+            
         elif username == password:
-            return "\033[91mUsuario e senhas iguais, tente novamente\033[0m"
-        elif username != '' and password != "":
-            cadastrar =  open (r"CRUD\cadastrotxt", "a")
-            cadastrar.write(f"{username},{password},{saldo}\n")
-            cadastrar.close()
-            return "\033[92mCadastro realizado com sucesso!\033[0m"
-        else:
-            return "\033[91mUsuário ou senha vazio\033[0m"
+            return( "\033[91mUsuario e senhas iguais, tente novamente\033[0m")
+            
+    if username != '' and password != "":
+        cadastrar =  open (r"CRUD\cadastrotxt", "a")
+        cadastrar.write(f"{username},{password},{saldo}\n")
+        cadastrar.close()
+        return ( "\033[92mCadastro realizado com sucesso!\033[0m")
+ 
+    else:
+        return( "\033[91mUsuário ou senha vazio\033[0m")
+           
     
 
 #txt
@@ -55,10 +60,12 @@ def Login_usuario(username, password):
     user=[]
     arquivo_cadastrotxt= open (r"CRUD\cadastrotxt", "r")
     for linha in arquivo_cadastrotxt:       
-        usuario, senha,saldo = linha.split(",")
-    
+        if not linha=="\n":
+            usuario, senha,saldo = linha.split(",")
+            registro.append([usuario,senha,saldo])
+        else:
+            linha=["1",'1',1]
         if username == usuario and password == senha:
-            print("\033[91mLogin correto\033[0m")
             user.append(username)
             user.append(senha)
             user.append(float(saldo))
@@ -146,6 +153,7 @@ while True:
     if opc == "1":
         username = input("Digite um nome de usuário: ")
         password = input("Digite uma senha: ")
+        print(Cadastro_usuario(username,password))
     elif opc == "2":
         username = input("Digite seu nome de usuário: ")
         password = input("Digite sua senha: ")
@@ -161,7 +169,7 @@ while True:
     else:
         print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
 
-extrato()
+# extrato()
 
 
 while True:
@@ -189,12 +197,13 @@ while True:
     elif opc == "3":
         print("\033[92mSaindo...\033[0m")
         break
+
     else:
         print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
 for i in range(len(registro)):
     if registro[i][0]== user[0]:
-        registro.remove(i)
+        del registro[i]
         registro.append(user)
 with open (r"CRUD\cadastrotxt", "w") as logtxt:
-      for linha in registro:
-        logtxt.write(registro[i])
+    for i in range(len(registro)):
+        logtxt.write(f"{registro[i][0]},{registro[i][1]},{registro[i][2]}\n")
