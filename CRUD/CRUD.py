@@ -28,21 +28,30 @@ cursor.execute('''  CREATE TABLE IF NOT EXISTS usuarios (
 
 conn.commit()
 
-# criando extrato no sqlite2
-def extrato():
+# Criando a tabela de extrato se não existir
+def criar_tabela_extrato():
     cursor.execute('''CREATE TABLE IF NOT EXISTS extrato (
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                    cpf_usuario TEXT,
                    tipo TEXT,
                    valor FLOAT,
-                   hora date
+                   hora TEXT
     )''')
     conn.commit()
-    # for i, (usuario, hora, relatorio) in enumerate(extrato):
-    #     arquivo_estrato.write(f"{relatorio} {hora} \n")
-    # conn.close()
-extrato()
-#SQLITE 
+criar_tabela_extrato()
+
+# Função para consultar e exibir o extrato
+def consultar_extrato(cpf):
+    cursor.execute("SELECT * FROM extrato WHERE cpf_usuario = ? ORDER BY hora", (cpf,))
+    extratos = cursor.fetchall()
+    print("\n\033[94mExtrato:\n\033[0m")
+    for extrato in extratos:
+        print(f"Tipo: {extrato[2]}, Valor: R$ {extrato[3]:.2f}, Data/Hora: {extrato[4]}")
+    cursor.execute("SELECT saldo FROM usuarios WHERE cpf = ?", (cpf,))
+    saldo = cursor.fetchone()[0]
+    print(f"\nSaldo atual: R$ {saldo:.2f}\n")
+
+# Função para cadastrar usuário
 def Cadastro_usuario(cpf, username, password):
     cursor.execute("SELECT * FROM usuarios WHERE cpf = ?", (cpf,))
     user = cursor.fetchone()
@@ -57,7 +66,7 @@ def Cadastro_usuario(cpf, username, password):
     else:
         return "\033[91mUsuário ou senha vazio\033[0m"
 
-#SQLITE
+# Função para login de usuário
 def Login_usuario(cpf, username, password):
     cursor.execute("SELECT * FROM usuarios WHERE cpf = ? AND username = ? AND password = ?", (cpf, username, password))
     user = cursor.fetchone()
@@ -66,13 +75,13 @@ def Login_usuario(cpf, username, password):
     else:
         return None
 
-
+# Função para obter o horário atual
 def horario():
     hora = datetime.now()
     hora = hora.strftime("%Y-%m-%d %H:%M:%S")
     return hora
-tipo=""
-#SQLITE
+
+# Função de operações bancárias
 def opcoes_banco(cpf, username, saldo):
     while True:
         print("=" * 33)
@@ -87,46 +96,39 @@ def opcoes_banco(cpf, username, saldo):
         opc1 = input()
         if opc1 == "1":
             os.system('cls')
-            print("Seu saldo é de R$", user[3])
-           
-
+            consultar_extrato(cpf)
 
         elif opc1 == "2":
             try:
                 saque = float(input("Qual valor você deseja sacar? "))
-                
             except ValueError:
                 print("\033[91mDigite um valor válido\033[0m")
             else:
-                if user[3] < saque:
+                if saldo < saque:
                     print("\033[91mValor insuficiente\033[0m")
                 else:
-                    tipo="saque"
-                    user[3] -= saque
-                    cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (user[3], cpf))
-                    hora=horario()
-                    cursor.execute("INSERT INTO extrato (cpf_usuario,tipo,valor,hora) VALUES (?, ?, ?,?)",(cpf,tipo,saque,hora))
-                    # print(f"Transação do tipo {tipo} no valor de {saldo}")
+                    tipo = "saque"
+                    saldo -= saque
+                    cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (saldo, cpf))
+                    hora = horario()
+                    cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, tipo, saque, hora))
                     conn.commit()
-                    relato_saque = f"Saque de R$ {saque:.2f} realizado com sucesso."
-                    print("\033[92m" + relato_saque + "\033[0m")
-                   
-            
+                    print(f"\033[92mSaque de R$ {saque:.2f} realizado com sucesso.\033[0m")
+
         elif opc1 == "3":
             try:
                 deposito = float(input("Qual valor que deseja depositar? "))
             except ValueError:
                 print("\033[91mDigite um valor válido\033[0m")
             else:
-                user[3] += deposito
-                cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (user[3], cpf))
-                tipo='deposito'
-                hora=str(horario())
-                saldo=int(saldo)
-                cursor.execute("INSERT INTO extrato (cpf_usuario,tipo,valor,hora) VALUES (?, ?, ?,?)",(cpf,tipo,deposito,hora))
+                saldo += deposito
+                cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (saldo, cpf))
+                tipo = 'deposito'
+                hora = horario()
+                cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, tipo, deposito, hora))
                 conn.commit()
-                relato_deposito = f"Depósito de R$ {deposito} realizado."
-                print("\033[92m" + relato_deposito + "\033[0m")
+                print(f"\033[92mDepósito de R$ {deposito:.2f} realizado.\033[0m")
+
         elif opc1 == "4":
             deletar_conta = input("Deseja deletar sua conta? (S/N)")
             if deletar_conta.lower() == "s":
@@ -134,21 +136,23 @@ def opcoes_banco(cpf, username, saldo):
                 conn.commit()
                 print("\033[92mConta deletada.\033[0m")
                 return
+
         elif opc1 == '5':
-            pesquisa = input("digite nome do usuário ")
-            cursor.execute("SELECT username FROM usuarios WHERE username= ?", (pesquisa,))
+            pesquisa = input("Digite o nome do usuário: ")
+            cursor.execute("SELECT username FROM usuarios WHERE username = ?", (pesquisa,))
             pesquisa = cursor.fetchone()
             if pesquisa:
-                print("\033[92mUsuário {} encontrado\033[0m".format(pesquisa[0]))
+                print(f"\033[92mUsuário {pesquisa[0]} encontrado.\033[0m")
             else:
-                print("\033[91mNão encontrado\033[0m")
+                print("\033[91mNão encontrado.\033[0m")
+
         elif opc1 == "0":
             print("\033[92mEncerrando sessão...\033[0m")
             return
         else:
             print("\033[91mOpção inválida.\033[0m")
 
-
+# Loop principal do programa
 while True:
     print("=" * 33)
     print("\033[94m1. Cadastrar\033[0m")
@@ -170,7 +174,7 @@ while True:
         user = Login_usuario(cpf, username, password)
         if user:
             print("\033[92mLogin bem-sucedido!\033[0m")
-            opcoes_banco(cpf, username, user[2])  # Passa o username e o saldo do usuário
+            opcoes_banco(cpf, username, user[3])  # Passa o username e o saldo do usuário
         else:
             print("\033[91mNome de usuário ou senha incorretos. Tente novamente.\033[0m")
     elif opc == "3":
@@ -178,5 +182,3 @@ while True:
         break
     else:
         print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
-
-extrato()
