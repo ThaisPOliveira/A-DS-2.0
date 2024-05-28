@@ -86,7 +86,9 @@ def opcoes_banco(cpf, username, saldo):
         print("=" * 33)
         opc1 = input()
         if opc1 == "1":
+            os.system('cls')
             print("Seu saldo é de R$", user[3])
+           
 
 
         elif opc1 == "2":
