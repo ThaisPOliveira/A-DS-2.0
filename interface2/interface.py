@@ -234,4 +234,3 @@ botao_sair.place(x=200, y=200)
 janela_principal.mainloop()
 
 
-
