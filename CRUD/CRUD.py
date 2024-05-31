@@ -153,32 +153,33 @@ def opcoes_banco(cpf, username, saldo):
             print("\033[91mOpção inválida.\033[0m")
 
 # Loop principal do programa
-while True:
-    print("=" * 33)
-    print("\033[94m1. Cadastrar\033[0m")
-    print("\033[94m2. Login\033[0m")
-    print("\033[94m3. Sair\033[0m")
-    print("=" * 33)
+def principal():
+    while True:
+        print("=" * 33)
+        print("\033[94m1. Cadastrar\033[0m")
+        print("\033[94m2. Login\033[0m")
+        print("\033[94m3. Sair\033[0m")
+        print("=" * 33)
 
-    opc = input("Escolha uma opção: ")
+        opc = input("Escolha uma opção: ")
 
-    if opc == "1":
-        cpf = input("Digite um Cpf: ")
-        username = input("Digite um nome de usuário: ")
-        password = pwinput.pwinput("Digite uma senha: ", mask="*")
-        print(Cadastro_usuario(cpf, username, password))
-    elif opc == "2":
-        cpf = input("Digite o seu Cpf: ")
-        username = input("Digite seu nome de usuário: ")
-        password = pwinput.pwinput("Digite sua senha: ", mask="*")
-        user = Login_usuario(cpf, username, password)
-        if user:
-            print("\033[92mLogin bem-sucedido!\033[0m")
-            opcoes_banco(cpf, username, user[3])  # Passa o username e o saldo do usuário
+        if opc == "1":
+            cpf = input("Digite um Cpf: ")
+            username = input("Digite um nome de usuário: ")
+            password = pwinput.pwinput("Digite uma senha: ", mask="*")
+            print(Cadastro_usuario(cpf, username, password))
+        elif opc == "2":
+            cpf = input("Digite o seu Cpf: ")
+            username = input("Digite seu nome de usuário: ")
+            password = pwinput.pwinput("Digite sua senha: ", mask="*")
+            user = Login_usuario(cpf, username, password)
+            if user:
+                print("\033[92mLogin bem-sucedido!\033[0m")
+                opcoes_banco(cpf, username, user[3])  # Passa o username e o saldo do usuário
+            else:
+                print("\033[91mNome de usuário ou senha incorretos. Tente novamente.\033[0m")
+        elif opc == "3":
+            print("\033[92mSaindo...\033[0m")
+            break
         else:
-            print("\033[91mNome de usuário ou senha incorretos. Tente novamente.\033[0m")
-    elif opc == "3":
-        print("\033[92mSaindo...\033[0m")
-        break
-    else:
-        print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
+            print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
