@@ -15,18 +15,20 @@ extrato = []
 os.system('cls')
 
 # Conexão com o banco de dados SQLite
+
 conn = sqlite3.connect('banco.db')
 cursor = conn.cursor()
 
 # Criando a tabela de usuários se não existir
-cursor.execute('''  CREATE TABLE IF NOT EXISTS usuarios (
-                    cpf TEXT PRIMARY KEY,
-                    username TEXT,
-                    password TEXT,
-                    saldo INTEGER
-                )''')
+def criar_tabela_usuarios():
+    cursor.execute('''  CREATE TABLE IF NOT EXISTS usuarios (
+                        cpf TEXT PRIMARY KEY,
+                        username TEXT,
+                        password TEXT,
+                        saldo INTEGER
+                    )''')
 
-conn.commit()
+    conn.commit()
 
 # Criando a tabela de extrato se não existir
 def criar_tabela_extrato():
@@ -38,6 +40,7 @@ def criar_tabela_extrato():
                    hora TEXT
     )''')
     conn.commit()
+criar_tabela_usuarios()
 criar_tabela_extrato()
 
 # Função para consultar e exibir o extrato

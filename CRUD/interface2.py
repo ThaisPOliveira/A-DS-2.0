@@ -4,55 +4,17 @@ from datetime import datetime
 from tkinter import *
 from tkinter import messagebox
 import pwinput
+import CRUD as crud
 
 # Conexão com o banco de dados SQLite
 conn = sqlite3.connect('banco.db')
 cursor = conn.cursor()
 
 # Criando a tabela de usuários se não existir
-cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-                    cpf TEXT PRIMARY KEY,
-                    username TEXT,
-                    password TEXT,
-                    saldo INTEGER
-                )''')
-conn.commit()
+crud.criar_tabela_usuarios()
 
 # Criando a tabela de extrato se não existir
-cursor.execute('''CREATE TABLE IF NOT EXISTS extrato (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    cpf_usuario TEXT,
-                    tipo TEXT,
-                    valor FLOAT,
-                    hora TEXT
-                )''')
-conn.commit()
-
-def Cadastro_usuario(cpf, username, password):
-    cursor.execute("SELECT * FROM usuarios WHERE cpf = ?", (cpf,))
-    user = cursor.fetchone()
-    if user:
-        return "CPF já cadastrado. Por favor, escolha outro."
-    elif username == password:
-        return "Usuário e senha iguais, tente novamente."
-    elif username != '' and password != "":
-        cursor.execute("INSERT INTO usuarios (cpf, username, password, saldo) VALUES (?, ?, ?, ?)", (cpf, username, password, 0))
-        conn.commit()
-        return "Cadastro realizado com sucesso!"
-    else:
-        return "Usuário ou senha vazio."
-
-def Login_usuario(cpf, username, password):
-    cursor.execute("SELECT * FROM usuarios WHERE cpf = ? AND username = ? AND password = ?", (cpf, username, password))
-    user = cursor.fetchone()
-    if user:
-        return list(user)
-    else:
-        return None
-
-def horario():
-    hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return hora
+crud.criar_tabela_extrato()
 
 def exibir_mensagem(texto_mensagem, mensagem):
     texto_mensagem.insert(END, mensagem + '\n')
@@ -81,7 +43,7 @@ def tela_cadastro():
         cpf = cpf_entry.get()
         username = username_entry.get()
         password = password_entry.get()
-        mensagem = Cadastro_usuario(cpf, username, password)
+        mensagem = crud.Cadastro_usuario(cpf, username, password)
         exibir_mensagem(caixa_mensagem, mensagem)
     
     Button(janela_cadastro, text="Cadastrar", command=realizar_cadastro).grid(row=3, columnspan=2, pady=10)
@@ -91,6 +53,7 @@ def tela_cadastro():
     caixa_mensagem.grid(row=4, columnspan=2, padx=10, pady=10)
 
 def opcoes_banco(cpf, username, saldo):
+    
     janela_menu = Toplevel()
     janela_menu.title("Menu")
     janela_menu.geometry('620x400')
@@ -102,12 +65,17 @@ def opcoes_banco(cpf, username, saldo):
     def consultar_extrato():
         cursor.execute("SELECT * FROM extrato WHERE cpf_usuario = ?", (cpf,))
         extratos = cursor.fetchall()
+        cursor.execute("SELECT saldo FROM usuarios WHERE cpf = ?", (cpf,))
+        saldo = cursor.fetchone()[0]
         if extratos:
             for extrato in extratos:
                 mensagem = f"Tipo: {extrato[2]}, Valor: {extrato[3]}, Hora: {extrato[4]}"
+                saldo_atual = f"saldo atual R${saldo}"
                 exibir_mensagem(caixa_mensagem, mensagem)
         else:
             exibir_mensagem(caixa_mensagem, "Nenhum extrato encontrado.")
+        exibir_mensagem(caixa_mensagem, saldo_atual)
+
 
     def realizar_saque():
         def saque():
@@ -120,7 +88,7 @@ def opcoes_banco(cpf, username, saldo):
                 else:
                     novo_saldo = saldo_atual - saque_valor
                     cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (novo_saldo, cpf))
-                    cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, 'saque', saque_valor, horario()))
+                    cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, 'saque', saque_valor, crud.horario()))
                     conn.commit()
                     exibir_mensagem(caixa_mensagem, f"Saque de R$ {saque_valor:.2f} realizado com sucesso.")
             except ValueError:
@@ -142,7 +110,7 @@ def opcoes_banco(cpf, username, saldo):
                 saldo_atual = cursor.fetchone()[0]
                 novo_saldo = saldo_atual + deposito_valor
                 cursor.execute("UPDATE usuarios SET saldo = ? WHERE cpf = ?", (novo_saldo, cpf))
-                cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, 'deposito', deposito_valor, horario()))
+                cursor.execute("INSERT INTO extrato (cpf_usuario, tipo, valor, hora) VALUES (?, ?, ?, ?)", (cpf, 'deposito', deposito_valor, crud.horario()))
                 conn.commit()
                 exibir_mensagem(caixa_mensagem, f"Depósito de R$ {deposito_valor:.2f} realizado com sucesso.")
             except ValueError:
@@ -163,6 +131,7 @@ def opcoes_banco(cpf, username, saldo):
             conn.commit()
             exibir_mensagem(caixa_mensagem, "Conta deletada com sucesso.")
             janela_menu.destroy()
+            janela_principal.deiconify()
 
         confirm_window = Toplevel(janela_menu)
         confirm_window.title("Confirmar Deleção")
@@ -184,12 +153,12 @@ def tela_login():
     janela_login.config(bg='black')
     
     Label(janela_login, text="CPF:", bg='black', fg='blue').grid(row=0, column=0, padx=10, pady=10, sticky=W)
-    cpf_entry = Entry(janela_login)
     cpf_entry.grid(row=0, column=1, padx=10, pady=10)
+    cpf_entry = Entry(janela_login)
     
     Label(janela_login, text="Nome de usuário:", bg='black', fg='blue').grid(row=1, column=0, padx=10, pady=10, sticky=W)
-    username_entry = Entry(janela_login)
     username_entry.grid(row=1, column=1, padx=10, pady=10)
+    username_entry = Entry(janela_login)
     
     Label(janela_login, text="Senha:", bg='black', fg='blue').grid(row=2, column=0, padx=10, pady=10, sticky=W)
     password_entry = Entry(janela_login, show="*")
@@ -199,9 +168,10 @@ def tela_login():
         cpf = cpf_entry.get()
         username = username_entry.get()
         password = password_entry.get()
-        usuario = Login_usuario(cpf, username, password)
+        usuario = crud.Login_usuario(cpf, username, password)
         if usuario:
             opcoes_banco(cpf, username, usuario[3])
+            janela_login.withdraw()
         else:
             exibir_mensagem(caixa_mensagem, "Usuário ou senha incorretos.")
     
