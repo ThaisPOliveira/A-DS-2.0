@@ -8,7 +8,6 @@
 #Pré Projeto Crud em Python
 import os
 import sqlite3
-import pwinput
 from datetime import datetime
 
 extrato = []
@@ -142,7 +141,8 @@ def opcoes_banco(cpf, username, saldo):
 
         elif opc1 == '5':
             pesquisa = input("Digite o nome do usuário: ")
-            cursor.execute("SELECT username FROM usuarios WHERE username = ?", (pesquisa,))
+            #cursor.execute("SELECT username FROM usuarios WHERE username = ?", (pesquisa,))
+            cursor.execute("SELECT username, usuario FROM usuario")
             pesquisa = cursor.fetchone()
             if pesquisa:
                 print(f"\033[92mUsuário {pesquisa[0]} encontrado.\033[0m")
@@ -169,12 +169,12 @@ def principal():
         if opc == "1":
             cpf = input("Digite um Cpf: ")
             username = input("Digite um nome de usuário: ")
-            password = pwinput.pwinput("Digite uma senha: ", mask="*")
+            password = input("Digite uma senha: ", mask="*")
             print(Cadastro_usuario(cpf, username, password))
         elif opc == "2":
             cpf = input("Digite o seu Cpf: ")
             username = input("Digite seu nome de usuário: ")
-            password = pwinput.pwinput("Digite sua senha: ", mask="*")
+            password = input ("Digite sua senha: ", mask="*")
             user = Login_usuario(cpf, username, password)
             if user:
                 print("\033[92mLogin bem-sucedido!\033[0m")
