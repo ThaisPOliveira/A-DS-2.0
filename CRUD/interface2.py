@@ -1,10 +1,8 @@
-import os
 import sqlite3
-from datetime import datetime
 from tkinter import *
 from tkinter import messagebox
-import pwinput
 import CRUD as crud
+from datetime import datetime
 
 # Conexão com o banco de dados SQLite
 conn = sqlite3.connect('banco.db')
@@ -16,15 +14,15 @@ crud.criar_tabela_usuarios()
 # Criando a tabela de extrato se não existir
 crud.criar_tabela_extrato()
 
-def exibir_mensagem(texto_mensagem, mensagem):
-    texto_mensagem.insert(END, mensagem + '\n')
-    texto_mensagem.see(END)
+def exibir_mensagem(caixa_mensagem_texto, mensagem):
+    caixa_mensagem_texto.insert(END, mensagem + '\n')
+    caixa_mensagem_texto.see(END)
 
 def tela_cadastro():
     janela_principal.withdraw()  # Oculta a janela principal
     janela_cadastro = Toplevel()
     janela_cadastro.title("Tela de Cadastro")
-    janela_cadastro.geometry('620x400')
+    janela_cadastro.geometry('445x310 ')
     janela_cadastro.config(bg='black')
     
     Label(janela_cadastro, text="CPF:", bg='black', fg='blue').grid(row=0, column=0, padx=10, pady=10, sticky=W)
@@ -49,7 +47,7 @@ def tela_cadastro():
     Button(janela_cadastro, text="Cadastrar", command=realizar_cadastro).grid(row=3, columnspan=2, pady=10)
     Button(janela_cadastro, text="Voltar", command=lambda: voltar(janela_cadastro)).grid(row=3, column=1, pady=10)
     
-    caixa_mensagem = Text(janela_cadastro, width=50, height=10)
+    caixa_mensagem = Text(janela_cadastro, width=50, height=5)
     caixa_mensagem.grid(row=4, columnspan=2, padx=10, pady=10)
 
 def opcoes_banco(cpf, username, saldo):
@@ -59,8 +57,8 @@ def opcoes_banco(cpf, username, saldo):
     janela_menu.geometry('620x400')
     janela_menu.config(bg='black')
     
-    caixa_mensagem = Text(janela_menu, width=30, height=10)
-    caixa_mensagem.grid(row=0, column=1, padx=10, pady=10, rowspan=4, sticky=E)
+    caixa_mensagem = Text(janela_menu, width=60, height=10, bg='black', fg='white')
+    caixa_mensagem.grid(row=0, column=1, padx=10, pady=10, rowspan=5, sticky=E)
 
     def consultar_extrato():
         cursor.execute("SELECT * FROM extrato WHERE cpf_usuario = ?", (cpf,))
@@ -70,7 +68,7 @@ def opcoes_banco(cpf, username, saldo):
         if extratos:
             for extrato in extratos:
                 mensagem = f"Tipo: {extrato[2]}, Valor: {extrato[3]}, Hora: {extrato[4]}"
-                saldo_atual = f"saldo atual R${saldo}"
+                saldo_atual = f"Saldo atual R${saldo}"
                 exibir_mensagem(caixa_mensagem, mensagem)
         else:
             exibir_mensagem(caixa_mensagem, "Nenhum extrato encontrado.")
@@ -97,10 +95,12 @@ def opcoes_banco(cpf, username, saldo):
         saque_window = Toplevel(janela_menu)
         saque_window.title("Saque")
         saque_window.geometry('300x200')
-        Label(saque_window, text="Valor do Saque:").pack(pady=10)
+        saque_window.config(bg='black')
+        Label(saque_window, text="Valor do Saque:", bg='black', fg='white').pack(pady=10)
         saque_entry = Entry(saque_window)
         saque_entry.pack(pady=10)
         Button(saque_window, text="Confirmar", command=saque).pack(pady=10)
+        Button(saque_window, text="Voltar", command=saque_window.destroy).pack(pady=10)
 
     def realizar_deposito():
         def deposito():
@@ -119,10 +119,12 @@ def opcoes_banco(cpf, username, saldo):
         deposito_window = Toplevel(janela_menu)
         deposito_window.title("Depósito")
         deposito_window.geometry('300x200')
-        Label(deposito_window, text="Valor do Depósito:").pack(pady=10)
+        deposito_window.config(bg='black')
+        Label(deposito_window, text="Valor do Depósito:", bg='black', fg='white').pack(pady=10)
         deposito_entry = Entry(deposito_window)
         deposito_entry.pack(pady=10)
         Button(deposito_window, text="Confirmar", command=deposito).pack(pady=10)
+        Button(deposito_window, text="Voltar", command=deposito_window.destroy).pack(pady=10)
     
     def deletar_conta():
         def confirmar_delecao():
@@ -136,29 +138,31 @@ def opcoes_banco(cpf, username, saldo):
         confirm_window = Toplevel(janela_menu)
         confirm_window.title("Confirmar Deleção")
         confirm_window.geometry('300x200')
-        Label(confirm_window, text="Deseja deletar sua conta?").pack(pady=10)
+        confirm_window.config(bg='black')
+        Label(confirm_window, text="Deseja deletar sua conta?", bg='black', fg='white').pack(pady=10)
         Button(confirm_window, text="Sim", command=confirmar_delecao).pack(side=LEFT, padx=20, pady=10)
         Button(confirm_window, text="Não", command=confirm_window.destroy).pack(side=RIGHT, padx=20, pady=10)
     
     Button(janela_menu, text="Consultar Extrato", command=consultar_extrato, width=30).grid(row=0, column=0, padx=10, pady=10, sticky=W)
     Button(janela_menu, text="Saque", command=realizar_saque, width=30).grid(row=1, column=0, padx=10, pady=10, sticky=W)
     Button(janela_menu, text="Depósito", command=realizar_deposito, width=30).grid(row=2, column=0, padx=10, pady=10, sticky=W)
-    Button(janela_menu, text="Deletar Conta", command=deletar_conta, width=30).grid(row=4, column=1, padx=10, pady=10, sticky=E)
+    Button(janela_menu, text="Deletar Conta", command=deletar_conta, width=30).grid(row=3, column=0, padx=10, pady=10, sticky=W)
+    Button(janela_menu, text="Sair", command=janela_menu.destroy, width=30).grid(row=4, column=0, padx=10, pady=10, sticky=W)
 
 def tela_login():
     janela_principal.withdraw()  # Oculta a janela principal
     janela_login = Toplevel()
     janela_login.title("Tela de Login")
-    janela_login.geometry('620x400')
+    janela_login.geometry('445x310')
     janela_login.config(bg='black')
     
     Label(janela_login, text="CPF:", bg='black', fg='blue').grid(row=0, column=0, padx=10, pady=10, sticky=W)
-    cpf_entry.grid(row=0, column=1, padx=10, pady=10)
     cpf_entry = Entry(janela_login)
+    cpf_entry.grid(row=0, column=1, padx=10, pady=10)
     
     Label(janela_login, text="Nome de usuário:", bg='black', fg='blue').grid(row=1, column=0, padx=10, pady=10, sticky=W)
-    username_entry.grid(row=1, column=1, padx=10, pady=10)
     username_entry = Entry(janela_login)
+    username_entry.grid(row=1, column=1, padx=10, pady=10)
     
     Label(janela_login, text="Senha:", bg='black', fg='blue').grid(row=2, column=0, padx=10, pady=10, sticky=W)
     password_entry = Entry(janela_login, show="*")
@@ -178,7 +182,7 @@ def tela_login():
     Button(janela_login, text="Login", command=realizar_login).grid(row=3, columnspan=2, pady=10)
     Button(janela_login, text="Voltar", command=lambda: voltar(janela_login)).grid(row=3, column=1, pady=10)
     
-    caixa_mensagem = Text(janela_login, width=50, height=10)
+    caixa_mensagem = Text(janela_login, width=50, height=5)
     caixa_mensagem.grid(row=4, columnspan=2, padx=10, pady=10)
 
 def voltar(janela):
@@ -199,3 +203,4 @@ Button(janela_principal, text="Sair", command=janela_principal.quit, width=30).p
 janela_principal.mainloop()
 
 conn.close()
+
