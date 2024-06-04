@@ -140,15 +140,12 @@ def opcoes_banco(cpf, username, saldo):
                 return
 
         elif opc1 == '5':
-            pesquisa = input("Digite o nome do usuário: ")
+            pesquisa = []
             #cursor.execute("SELECT username FROM usuarios WHERE username = ?", (pesquisa,))
-            cursor.execute("SELECT username, usuario FROM usuario")
-            pesquisa = cursor.fetchone()
-            if pesquisa:
-                print(f"\033[92mUsuário {pesquisa[0]} encontrado.\033[0m")
-            else:
-                print("\033[91mNão encontrado.\033[0m")
-
+            cursor.execute("SELECT username, saldo FROM usuarios")
+            pesquisa = cursor.fetchall()
+            for i in range(len(pesquisa)):
+                print(f"\033[92mUsuário {pesquisa[i][0]} saldo R$ {pesquisa[i][1]}. \033[0m") if pesquisa else print("\033[91mNão encontrado.\033[0m")
         elif opc1 == "0":
             print("\033[92mEncerrando sessão...\033[0m")
             return
