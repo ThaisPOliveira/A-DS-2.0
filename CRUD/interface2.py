@@ -56,9 +56,11 @@ def opcoes_banco(cpf, username, saldo):
     janela_menu.title("Menu")
     janela_menu.geometry('620x400')
     janela_menu.config(bg='black')
-    
-    caixa_mensagem = Text(janela_menu, width=60, height=10, bg='black', fg='white')
-    caixa_mensagem.grid(row=0, column=1, padx=10, pady=10, rowspan=5, sticky=E)
+    frame = Frame(janela_menu, bg='black')
+    frame.pack()
+
+    caixa_mensagem = Text(janela_menu, width=60, height=5, bg='white', fg='black')
+    caixa_mensagem.pack(side='bottom', pady=10)
 
     def consultar_extrato():
         cursor.execute("SELECT * FROM extrato WHERE cpf_usuario = ?", (cpf,))
@@ -99,8 +101,10 @@ def opcoes_banco(cpf, username, saldo):
         Label(saque_window, text="Valor do Saque:", bg='black', fg='white').pack(pady=10)
         saque_entry = Entry(saque_window)
         saque_entry.pack(pady=10)
-        Button(saque_window, text="Confirmar", command=saque).pack(pady=10)
-        Button(saque_window, text="Voltar", command=saque_window.destroy).pack(pady=10)
+        frame = Frame(saque_window,bg='black')
+        frame.pack()
+        Button(frame, text="Confirmar", command=saque).pack(side="left", padx=7, pady=10)
+        Button(frame, text="Voltar", command=saque_window.destroy).pack(side="left", padx=10, pady=10)
 
     def realizar_deposito():
         def deposito():
@@ -123,8 +127,11 @@ def opcoes_banco(cpf, username, saldo):
         Label(deposito_window, text="Valor do Depósito:", bg='black', fg='white').pack(pady=10)
         deposito_entry = Entry(deposito_window)
         deposito_entry.pack(pady=10)
-        Button(deposito_window, text="Confirmar", command=deposito).pack(pady=10)
-        Button(deposito_window, text="Voltar", command=deposito_window.destroy).pack(pady=10)
+        frame = Frame(deposito_window,bg='black')
+        frame.pack()
+        Button(frame, text="Confirmar", command=deposito).pack(side="left", padx=7, pady=10)
+        Button(frame, text="Voltar", command=deposito_window.destroy).pack(side="left", padx=10, pady=10)
+   
     
     def deletar_conta():
         def confirmar_delecao():
@@ -143,11 +150,12 @@ def opcoes_banco(cpf, username, saldo):
         Button(confirm_window, text="Sim", command=confirmar_delecao).pack(side=LEFT, padx=20, pady=10)
         Button(confirm_window, text="Não", command=confirm_window.destroy).pack(side=RIGHT, padx=20, pady=10)
     
-    Button(janela_menu, text="Consultar Extrato", command=consultar_extrato, width=30).grid(row=0, column=0, padx=10, pady=10, sticky=W)
-    Button(janela_menu, text="Saque", command=realizar_saque, width=30).grid(row=1, column=0, padx=10, pady=10, sticky=W)
-    Button(janela_menu, text="Depósito", command=realizar_deposito, width=30).grid(row=2, column=0, padx=10, pady=10, sticky=W)
-    Button(janela_menu, text="Deletar Conta", command=deletar_conta, width=30).grid(row=3, column=0, padx=10, pady=10, sticky=W)
-    Button(janela_menu, text="Sair", command=janela_menu.destroy, width=30).grid(row=4, column=0, padx=10, pady=10, sticky=W)
+    Button(frame, text="Consultar Extrato", command=consultar_extrato, width=30).grid(row=0, column=0, padx=10, pady=10, sticky=W)
+    Button(frame, text="Saque", command=realizar_saque, width=30).grid(row=1, column=0, padx=10, pady=10, sticky=W)
+    Button(frame, text="Depósito", command=realizar_deposito, width=30).grid(row=2, column=0, padx=10, pady=10, sticky=W)
+    Button(frame, text="Deletar Conta", command=deletar_conta, width=30).grid(row=3, column=0, padx=10, pady=10, sticky=W)
+    Button(frame, text="Sair", command=janela_menu.destroy, width=30).grid(row=4, column=0, padx=10, pady=10, sticky=W)
+    
 
 def tela_login():
     janela_principal.withdraw()  # Oculta a janela principal
