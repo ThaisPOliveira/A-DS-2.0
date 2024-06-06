@@ -166,12 +166,12 @@ def principal():
         if opc == "1":
             cpf = input("Digite um Cpf: ")
             username = input("Digite um nome de usuário: ")
-            password = input("Digite uma senha: ", mask="*")
+            password = input("Digite uma senha: ")
             print(Cadastro_usuario(cpf, username, password))
         elif opc == "2":
             cpf = input("Digite o seu Cpf: ")
             username = input("Digite seu nome de usuário: ")
-            password = input ("Digite sua senha: ", mask="*")
+            password = input ("Digite sua senha: ")
             user = Login_usuario(cpf, username, password)
             if user:
                 print("\033[92mLogin bem-sucedido!\033[0m")
