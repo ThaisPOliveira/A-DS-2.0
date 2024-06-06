@@ -1,8 +1,11 @@
 import sqlite3
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 import CRUD as crud
 from datetime import datetime
+from PIL import ImageTk, Image
+import os
+
 
 # Conexão com o banco de dados SQLite
 conn = sqlite3.connect('banco.db')
@@ -24,16 +27,17 @@ def tela_cadastro():
     janela_cadastro.title("Tela de Cadastro")
     janela_cadastro.geometry('445x310 ')
     janela_cadastro.config(bg='black')
-    
-    Label(janela_cadastro, text="CPF:", bg='black', fg='blue').grid(row=0, column=0, padx=10, pady=10, sticky=W)
+   
+    Label(janela_cadastro, text="CPF:", bg='black', fg='white').grid(row=0, column=0, padx=10, pady=10, sticky=W)
+   
     cpf_entry = Entry(janela_cadastro)
     cpf_entry.grid(row=0, column=1, padx=10, pady=10)
     
-    Label(janela_cadastro, text="Nome de usuário:", bg='black', fg='blue').grid(row=1, column=0, padx=10, pady=10, sticky=W)
+    Label(janela_cadastro, text="Nome de usuário:", bg='black', fg='white').grid(row=1, column=0, padx=10, pady=10, sticky=W)
     username_entry = Entry(janela_cadastro)
     username_entry.grid(row=1, column=1, padx=10, pady=10)
     
-    Label(janela_cadastro, text="Senha:", bg='black', fg='blue').grid(row=2, column=0, padx=10, pady=10, sticky=W)
+    Label(janela_cadastro, text="Senha:", bg='black', fg='white').grid(row=2, column=0, padx=10, pady=10, sticky=W)
     password_entry = Entry(janela_cadastro, show="*")
     password_entry.grid(row=2, column=1, padx=10, pady=10)
     
@@ -164,15 +168,15 @@ def tela_login():
     janela_login.geometry('445x310')
     janela_login.config(bg='black')
     
-    Label(janela_login, text="CPF:", bg='black', fg='blue').grid(row=0, column=0, padx=10, pady=10, sticky=W)
+    Label(janela_login, text="CPF:", bg='black', fg='white').grid(row=0, column=0, padx=10, pady=10, sticky=W)
     cpf_entry = Entry(janela_login)
     cpf_entry.grid(row=0, column=1, padx=10, pady=10)
     
-    Label(janela_login, text="Nome de usuário:", bg='black', fg='blue').grid(row=1, column=0, padx=10, pady=10, sticky=W)
+    Label(janela_login, text="Nome de usuário:", bg='black', fg='white').grid(row=1, column=0, padx=10, pady=10, sticky=W)
     username_entry = Entry(janela_login)
     username_entry.grid(row=1, column=1, padx=10, pady=10)
     
-    Label(janela_login, text="Senha:", bg='black', fg='blue').grid(row=2, column=0, padx=10, pady=10, sticky=W)
+    Label(janela_login, text="Senha:", bg='black', fg='white').grid(row=2, column=0, padx=10, pady=10, sticky=W)
     password_entry = Entry(janela_login, show="*")
     password_entry.grid(row=2, column=1, padx=10, pady=10)
     
@@ -202,11 +206,21 @@ janela_principal = Tk()
 janela_principal.title("Sistema Bancário")
 janela_principal.geometry('620x400')
 janela_principal.config(bg='black')
+frame = Frame(janela_principal, bg='black')
+frame.pack()
 
-Label(janela_principal, text="Bem-vindo ao Sistema Bancário", bg='black', fg='blue', font=("Helvetica", 16)).pack(pady=20)
-Button(janela_principal, text="Cadastro", command=tela_cadastro, width=30).pack(pady=10)
-Button(janela_principal, text="Login", command=tela_login, width=30).pack(pady=10)
-Button(janela_principal, text="Sair", command=janela_principal.quit, width=30).pack(pady=10)
+image = Image.open("CRUD/logo_reet.jpg")
+resize=image.resize((100,100))
+image = ImageTk.PhotoImage(resize)
+logo = Label(image= image)
+logo.image=image
+logo.place(x=510, y=300)
+# -----
+
+Label(frame, text="Bem-vindo ao Sistema Bancário", bg='black', fg='white', font=("Helvetica", 16)).pack(pady=20)
+Button(frame, text="Cadastro", command=tela_cadastro, width=30).pack(pady=10)
+Button(frame, text="Login", command=tela_login, width=30).pack(pady=10)
+Button(frame, text="Sair", command=janela_principal.quit, width=30).pack(pady=10)
 
 janela_principal.mainloop()
 
