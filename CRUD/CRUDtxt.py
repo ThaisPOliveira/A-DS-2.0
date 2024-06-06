@@ -27,7 +27,7 @@ registro=[]
 #txt
 def Cadastro_usuario(username, password):
     usuarios=[]
-    saldo=0
+    
     with open (r"CRUD\cadastrotxt", "r") as arquivo_cadastrotxt: 
         for linha in arquivo_cadastrotxt:
             if not linha=="\n":
@@ -45,6 +45,7 @@ def Cadastro_usuario(username, password):
             
     if username != '' and password != "":
         cadastrar =  open (r"CRUD\cadastrotxt", "a")
+        saldo= 0
         cadastrar.write(f"{username},{password},{saldo}\n")
         cadastrar.close()
         return ( "\033[92mCadastro realizado com sucesso!\033[0m")
@@ -64,7 +65,7 @@ def Login_usuario(username, password):
             usuario, senha,saldo = linha.split(",")
             registro.append([usuario,senha,saldo])
         else:
-            linha=["1",'1',1]
+            linha=["0",'0',0]
         if username == usuario and password == senha:
             user.append(username)
             user.append(senha)
@@ -77,7 +78,14 @@ def horario():
     hora = datetime.now()
     hora = hora.strftime("%d/%m/%Y %H:%M")
     return hora
-
+def reescrever():
+    for i in range(len(registro)):
+        if registro[i][0]== user[0]:
+            del registro[i]
+            registro.append(user)
+    with open (r"CRUD\cadastrotxt", "w") as logtxt:
+        for i in range(len(registro)):
+            logtxt.write(f"{registro[i][0]},{registro[i][1]},{registro[i][2]}\n")
 #SQLITE (NÃO PRECISA MUDAR NADA - THAIS DO PASSADO)
 def opcoes_banco(username, saldo):
     while True:
@@ -136,6 +144,7 @@ def opcoes_banco(username, saldo):
                 print("\033[91mNão encontrado\033[0m")
         elif opc1 == "0":
             print("\033[92mEncerrando sessão...\033[0m")
+            reescrever()
             return
         else:
             print("\033[91mOpção inválida.\033[0m")
@@ -200,11 +209,5 @@ while True:
 
     else:
         print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
-for i in range(len(registro)):
-    if registro[i][0]== user[0]:
-        del registro[i]
-        registro.append(user)
-with open (r"CRUD\cadastrotxt", "w") as logtxt:
-    for i in range(len(registro)):
-        logtxt.write(f"{registro[i][0]},{registro[i][1]},{registro[i][2]}\n")
+
 extrato()
