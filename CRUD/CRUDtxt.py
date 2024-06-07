@@ -6,7 +6,7 @@
 #       Rafael da Silva Castro: 11241104987
 #       Thais Perreira de Oliveira: 11241103553
 
-#Pré Projeto Crud em Python
+#Projeto Crud em Python
 import os
 import sqlite3
 from datetime import datetime

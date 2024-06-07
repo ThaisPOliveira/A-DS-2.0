@@ -1,3 +1,11 @@
+#UMC ADS - 1°D
+#Nomes: 
+#       Eduardo Vicente Ferreira das Neves: 11241104345
+#       Erick Fernando Martins Santos: 11241504537
+#       Rafael da Silva Castro: 11241104987
+#       Thais Perreira de Oliveira: 11241103553
+
+# OBS: código funcionando importando as funções do arquivo CRUD.py
 import sqlite3
 from tkinter import *
 from tkinter import messagebox, filedialog
@@ -78,6 +86,8 @@ def opcoes_banco(cpf, username, saldo):
                 exibir_mensagem(caixa_mensagem, mensagem)
         else:
             exibir_mensagem(caixa_mensagem, "Nenhum extrato encontrado.")
+            saldo = 0
+            saldo_atual = f"Saldo atual R${saldo}"
         exibir_mensagem(caixa_mensagem, saldo_atual)
 
 
@@ -147,12 +157,14 @@ def opcoes_banco(cpf, username, saldo):
             janela_principal.deiconify()
 
         confirm_window = Toplevel(janela_menu)
-        confirm_window.title("Confirmar Deleção")
+        confirm_window.title("Confirmar zDeleção")
         confirm_window.geometry('300x200')
         confirm_window.config(bg='black')
+        cursor.execute("SELECT saldo FROM usuarios WHERE cpf = ?", (cpf,))
+        saldo_atual = cursor.fetchone()[0]
         Label(confirm_window, text="Deseja deletar sua conta?"+
               "\n Conta atual"+
-              f"\nCPF: {cpf} Saldo R${saldo}  ",  bg='black', fg='white').pack(pady=10)
+              f"\nCPF: {cpf} Saldo R${saldo_atual}  ",  bg='black', fg='white').pack(pady=10)
         Button(confirm_window, text="Sim", command=confirmar_delecao).pack(side=LEFT, padx=20, pady=10)
         Button(confirm_window, text="Não", command=confirm_window.destroy).pack(side=RIGHT, padx=20, pady=10)
     
