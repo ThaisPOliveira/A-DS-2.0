@@ -33,7 +33,7 @@ def criar_tabela_usuarios():
 def criar_tabela_extrato():
     cursor.execute('''CREATE TABLE IF NOT EXISTS extrato (
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   cpf_usuario TEXT,
+                   cpf_usuario INTEGER,
                    tipo TEXT,
                    valor FLOAT,
                    hora TEXT
@@ -132,7 +132,8 @@ def opcoes_banco(cpf, username, saldo):
                 print(f"\033[92mDepósito de R$ {deposito:.2f} realizado.\033[0m")
 
         elif opc1 == "4":
-            deletar_conta = input("Deseja deletar sua conta? (S/N)")
+            deletar_conta = input("Deseja deletar sua conta? (S/N) "+
+                                  f"\n Conta atual, CPF: {cpf} Saldo R${saldo}  ")
             if deletar_conta.lower() == "s":
                 cursor.execute("DELETE FROM usuarios WHERE username = ?", (username,))
                 conn.commit()
@@ -164,10 +165,14 @@ def principal():
         opc = input("Escolha uma opção: ")
 
         if opc == "1":
-            cpf = input("Digite um Cpf: ")
-            username = input("Digite um nome de usuário: ")
-            password = input("Digite uma senha: ")
-            print(Cadastro_usuario(cpf, username, password))
+            try:
+                cpf = int(input("Digite seu Cpf, somente números: "))
+            except ValueError:
+                print("\033[91mCpf inválido\033[0m")
+            else:
+                username = input("Digite um nome de usuário: ")
+                password = input("Digite uma senha: ")
+                print(Cadastro_usuario(cpf, username, password))
         elif opc == "2":
             cpf = input("Digite o seu Cpf: ")
             username = input("Digite seu nome de usuário: ")
@@ -183,3 +188,4 @@ def principal():
             break
         else:
             print("\033[91mOpção inválida. Por favor, escolha novamente.\033[0m")
+# principal()

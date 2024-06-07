@@ -25,7 +25,7 @@ def tela_cadastro():
     janela_principal.withdraw()  # Oculta a janela principal
     janela_cadastro = Toplevel()
     janela_cadastro.title("Tela de Cadastro")
-    janela_cadastro.geometry('445x310 ')
+    janela_cadastro.geometry('445x310')
     janela_cadastro.config(bg='black')
    
     Label(janela_cadastro, text="CPF:", bg='black', fg='white').grid(row=0, column=0, padx=10, pady=10, sticky=W)
@@ -150,7 +150,9 @@ def opcoes_banco(cpf, username, saldo):
         confirm_window.title("Confirmar Deleção")
         confirm_window.geometry('300x200')
         confirm_window.config(bg='black')
-        Label(confirm_window, text="Deseja deletar sua conta?", bg='black', fg='white').pack(pady=10)
+        Label(confirm_window, text="Deseja deletar sua conta?"+
+              "\n Conta atual"+
+              f"\nCPF: {cpf} Saldo R${saldo}  ",  bg='black', fg='white').pack(pady=10)
         Button(confirm_window, text="Sim", command=confirmar_delecao).pack(side=LEFT, padx=20, pady=10)
         Button(confirm_window, text="Não", command=confirm_window.destroy).pack(side=RIGHT, padx=20, pady=10)
     
