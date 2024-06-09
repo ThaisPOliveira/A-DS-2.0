@@ -166,7 +166,7 @@ def excluir_livro(biblioteca):
 Título: {biblioteca[isbn]['Título']}
 Autor: {biblioteca[isbn]['Autor']}
 Gênero: {biblioteca[isbn]['Gênero']}''')
-        confirmar_excluir = input("Tem certeza que deseja deletar esse livro? digite CONFIRMAR.")
+        confirmar_excluir = input("Tem certeza que deseja deletar esse livro? Digite CONFIRMAR.")
         if confirmar_excluir == "CONFIRMAR":
             del biblioteca[isbn] 
             salvar_biblioteca(biblioteca)
