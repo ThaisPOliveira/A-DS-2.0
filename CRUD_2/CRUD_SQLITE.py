@@ -48,7 +48,7 @@ def init_db():
 # Função para adicionar um livro
 def adicionar_livro():
     try: 
-        isbn = int(input(f"{CYAN}Digite o ISBN-13, somente números (formato XXXXXXXXXXXXXXX): {RESET}"))
+        isbn = int(input(f"{CYAN}Digite o ISBN-13, somente números (formato XXXXXXXXXXXXXXX (13 digitos)): {RESET}"))
     except ValueError:
         print(f"{RED}Digite somente números.{RESET}")
         return
