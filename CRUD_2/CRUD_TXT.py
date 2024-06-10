@@ -56,7 +56,7 @@ def salvar_biblioteca(biblioteca):
 # Função para adicionar um livro
 def adicionar_livro(biblioteca):
     try: 
-        isbn = int(input(f"{CYAN}Digite o ISBN-13, somente números (formato XXX-X-XXXXX-XXXXX-X): {RESET}"))
+        isbn = int(input(f"{CYAN}Digite o ISBN-13, somente números (formato XXXXXXXXXXXXXXX (13 digitos)): {RESET}"))
     except ValueError:
         print(f"{RED}Digite somente números.{RESET}")
         return
