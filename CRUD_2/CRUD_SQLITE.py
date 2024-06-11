@@ -110,10 +110,10 @@ def buscar_livro_isbn():
 
 # Função para buscar um livro por título
 def buscar_livro_titulo():
-    titulo = input(f"{CYAN}Digite o título: {RESET}")
+    titulo = input(f"{CYAN}Digite o título: {RESET}")+"%"
     conn = sqlite3.connect('biblioteca.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM livros WHERE titulo = ?', (titulo,))
+    cursor.execute('SELECT * FROM livros WHERE titulo LIKE ?', (titulo,))
     livros = cursor.fetchall()
     conn.close()
 
@@ -125,10 +125,10 @@ def buscar_livro_titulo():
 
 # Função para buscar um livro por autor
 def buscar_livro_autor():
-    autor = input(f"{CYAN}Digite o autor: {RESET}")
+    autor = input(f"{CYAN}Digite o autor: {RESET}")+"%"
     conn = sqlite3.connect('biblioteca.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM livros WHERE autor = ?', (autor,))
+    cursor.execute('SELECT * FROM livros WHERE autor LIKE ?%', (autor,))
     livros = cursor.fetchall()
     conn.close()
 
@@ -140,10 +140,10 @@ def buscar_livro_autor():
 
 # Função para buscar um livro por gênero
 def buscar_livro_genero():
-    genero = input(f"{CYAN}Digite o gênero: {RESET}")
+    genero = input(f"{CYAN}Digite o gênero: {RESET}")+"%"
     conn = sqlite3.connect('biblioteca.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM livros WHERE genero = ?', (genero,))
+    cursor.execute('SELECT * FROM livros WHERE genero LIKE ?%', (genero,))
     livros = cursor.fetchall()
     conn.close()
 
