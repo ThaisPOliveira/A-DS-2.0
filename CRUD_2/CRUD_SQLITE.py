@@ -2,11 +2,10 @@
 # Bruno Teodoro Oliveira da Lomba
 # João Martins Bernades
 # Luis Felipe Rodrigues da Silva
-
+# Gabriel Felipe Marques dos Santos
 import os
 import sqlite3
 
-# Códigos ANSI para cores
 RED = '\033[91m'
 GREEN = '\033[92m'
 YELLOW = '\033[93m'

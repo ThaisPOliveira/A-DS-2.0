@@ -1,3 +1,9 @@
+# Victor Lindolfo Silva
+# Bruno Teodoro Oliveira da Lomba
+# João Martins Bernades
+# Luis Felipe Rodrigues da Silva
+# Gabriel Felipe Marques dos Santos
+
 import os
 import sqlite3
 import tkinter as tk

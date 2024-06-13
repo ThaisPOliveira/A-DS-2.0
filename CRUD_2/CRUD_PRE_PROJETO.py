@@ -2,9 +2,8 @@
 # # Bruno Teodoro Oliveira da Lomba
 # # João Martins Bernades
 # # Luis Felipe Rodrigues da Silva
+# Gabriel Felipe Marques dos Santos
 
-
-# Códigos ANSI para cores
 import os
 
 
@@ -36,7 +35,7 @@ def gerar_ascii():
 # Função para adicionar um livro
 def adicionar_livro(biblioteca):
     try: 
-        isbn = int(input(f"{CYAN}Digite o ISBN-13, somente números (formato XXXXXXXXXXXXXXX (13 digitos)): {RESET}"))
+        isbn = int(input(f"{CYAN}Digite o ISBN-13,  números (formato XXXXXXXXXXXXXXX (13 digitos)): {RESET}"))
     except ValueError:
         print(f"{RED}Digite somente números.{RESET}")
         return
